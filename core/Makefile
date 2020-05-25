@@ -2,7 +2,7 @@ PROJECT_SOURCEFILES = pubnub_pubsubapi.c pubnub_coreapi.c pubnub_ccore_pubsub.c 
 
 all: pubnub_proxy_unittest pubnub_timer_list_unittest unittest
 
-OS := $(shell uname)
+OS := Android
 # Coverage doesn't seem to work on MacOS for some reason, but, since
 # we can get it on Linux, we don't want to spend time figuring it out,
 # simply don't do it on MacOS.

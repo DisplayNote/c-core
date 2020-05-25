@@ -68,14 +68,14 @@ ifeq ($(USE_AUTO_HEARTBEAT), 1)
 SOURCEFILES += ../core/pbauto_heartbeat.c ../posix/pbauto_heartbeat_init_posix.c ../lib/pbstr_remove_from_list.c
 endif
 
-OS := $(shell uname)
-ifeq ($(OS),Darwin)
-SOURCEFILES += ../posix/monotonic_clock_get_time_darwin.c
-LDLIBS=-lpthread
-else
+# OS := $(shell uname)
+# ifeq ($(OS),Darwin)
+# SOURCEFILES += ../posix/monotonic_clock_get_time_darwin.c
+# LDLIBS=-lpthread
+# else
 SOURCEFILES += ../posix/monotonic_clock_get_time_posix.c
-LDLIBS=-lrt -lpthread
-endif
+LDLIBS=-lc
+# endif
 
 CFLAGS =-g -I .. -I ../posix -I . -Wall -D PUBNUB_THREADSAFE -D PUBNUB_LOG_LEVEL=PUBNUB_LOG_LEVEL_WARNING -D PUBNUB_ONLY_PUBSUB_API=$(ONLY_PUBSUB_API) -D PUBNUB_PROXY_API=$(USE_PROXY) -D PUBNUB_USE_GZIP_COMPRESSION=$(USE_GZIP_COMPRESSION) -D PUBNUB_RECEIVE_GZIP_RESPONSE=$(RECEIVE_GZIP_RESPONSE) -D PUBNUB_USE_SUBSCRIBE_V2=$(USE_SUBSCRIBE_V2) -D PUBNUB_USE_OBJECTS_API=$(USE_OBJECTS_API) -D PUBNUB_USE_ACTIONS_API=$(USE_ACTIONS_API) -D PUBNUB_USE_AUTO_HEARTBEAT=$(USE_AUTO_HEARTBEAT)
 # -g enables debugging, remove to get a smaller executable

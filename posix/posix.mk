@@ -78,18 +78,18 @@ SOURCEFILES += ../core/pbauto_heartbeat.c ../posix/pbauto_heartbeat_init_posix.c
 OBJFILES += pbauto_heartbeat.o pbauto_heartbeat_init_posix.o pbstr_remove_from_list.o
 endif
 
-OS := $(shell uname)
-ifeq ($(OS),Darwin)
-SOURCEFILES += monotonic_clock_get_time_darwin.c
-OBJFILES += monotonic_clock_get_time_darwin.o
-LDLIBS=-lpthread
-else
+# OS := $(shell uname)
+# ifeq ($(OS),Darwin)
+# SOURCEFILES += monotonic_clock_get_time_darwin.c
+# OBJFILES += monotonic_clock_get_time_darwin.o
+# LDLIBS=-lpthread
+# else
 SOURCEFILES += monotonic_clock_get_time_posix.c
 OBJFILES += monotonic_clock_get_time_posix.o
-LDLIBS=-lrt -lpthread
-endif
+LDLIBS=-lc
+# endif
 
-CFLAGS =-g -Wall -D PUBNUB_THREADSAFE -D PUBNUB_LOG_LEVEL=PUBNUB_LOG_LEVEL_WARNING -D PUBNUB_ONLY_PUBSUB_API=$(ONLY_PUBSUB_API) -D PUBNUB_PROXY_API=$(USE_PROXY) -D PUBNUB_USE_GZIP_COMPRESSION=$(USE_GZIP_COMPRESSION) -D PUBNUB_RECEIVE_GZIP_RESPONSE=$(RECEIVE_GZIP_RESPONSE) -D PUBNUB_USE_SUBSCRIBE_V2=$(USE_SUBSCRIBE_V2) -D PUBNUB_USE_OBJECTS_API=$(USE_OBJECTS_API) -D PUBNUB_USE_ACTIONS_API=$(USE_ACTIONS_API) -D PUBNUB_USE_AUTO_HEARTBEAT=$(USE_AUTO_HEARTBEAT)
+CFLAGS =-Wall -D PUBNUB_THREADSAFE -D PUBNUB_LOG_LEVEL=PUBNUB_LOG_LEVEL_WARNING -D PUBNUB_ONLY_PUBSUB_API=$(ONLY_PUBSUB_API) -D PUBNUB_PROXY_API=$(USE_PROXY) -D PUBNUB_USE_GZIP_COMPRESSION=$(USE_GZIP_COMPRESSION) -D PUBNUB_RECEIVE_GZIP_RESPONSE=$(RECEIVE_GZIP_RESPONSE) -D PUBNUB_USE_SUBSCRIBE_V2=$(USE_SUBSCRIBE_V2) -D PUBNUB_USE_OBJECTS_API=$(USE_OBJECTS_API) -D PUBNUB_USE_ACTIONS_API=$(USE_ACTIONS_API) -D PUBNUB_USE_AUTO_HEARTBEAT=$(USE_AUTO_HEARTBEAT)
 # -g enables debugging, remove to get a smaller executable
 # -fsanitize-address Use AddressSanitizer
 
@@ -100,9 +100,9 @@ all: pubnub_sync_sample metadata cancel_subscribe_sync_sample pubnub_advanced_hi
 SYNC_INTF_SOURCEFILES=../core/pubnub_ntf_sync.c ../core/pubnub_sync_subscribe_loop.c ../core/srand_from_pubnub_time.c
 SYNC_INTF_OBJFILES=pubnub_ntf_sync.o pubnub_sync_subscribe_loop.o srand_from_pubnub_time.o
 
-pubnub_sync.a : $(SOURCEFILES) $(SYNC_INTF_SOURCEFILES)
-	$(CC) -c $(CFLAGS) $(INCLUDES) $(SOURCEFILES) $(SYNC_INTF_SOURCEFILES)
-	ar rcs pubnub_sync.a $(OBJFILES) $(SYNC_INTF_OBJFILES)
+# pubnub_sync.a : $(SOURCEFILES) $(SYNC_INTF_SOURCEFILES)
+# 	$(CC) -c $(CFLAGS) $(INCLUDES) $(SOURCEFILES) $(SYNC_INTF_SOURCEFILES)
+# 	ar rcs pubnub_sync.a $(OBJFILES) $(SYNC_INTF_OBJFILES)
 
 CALLBACK_INTF_SOURCEFILES=pubnub_ntf_callback_posix.c pubnub_get_native_socket.c ../core/pubnub_timer_list.c ../lib/sockets/pbpal_ntf_callback_poller_poll.c ../lib/sockets/pbpal_adns_sockets.c ../lib/pubnub_dns_codec.c ../core/pbpal_ntf_callback_queue.c ../core/pbpal_ntf_callback_admin.c ../core/pbpal_ntf_callback_handle_timer_list.c  ../core/pubnub_callback_subscribe_loop.c
 CALLBACK_INTF_OBJFILES=pubnub_ntf_callback_posix.o pubnub_get_native_socket.o pubnub_timer_list.o pbpal_ntf_callback_poller_poll.o pbpal_adns_sockets.o pubnub_dns_codec.o pbpal_ntf_callback_queue.o pbpal_ntf_callback_admin.o pbpal_ntf_callback_handle_timer_list.o pubnub_callback_subscribe_loop.o
